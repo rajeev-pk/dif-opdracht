@@ -20,15 +20,18 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{{ path('home') }}">Home</a>
             </li>
-              {% if(is_granted("ROLE_BOEK") or is_granted("ROLE_ADMIN")) %}
+              {% if(is_granted("ROLE_BOEK") or is_granted("ROLE_ADMIN")) or is_granted("ROLE_BALIE") %}
               <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{{ path("factuur") }}">Facatuur</a>
               </li>
               {% endif %}
+              {% if(is_granted("ROLE_BOEK")) %}
+              {% else %}
               <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{{ path("product_index") }}">Product</a>
+                   <a class="nav-link active" aria-current="page" href="{{ path("product_index") }}">Product</a>
               </li>
-              {% if(is_granted("ROLE_RAPORT") or is_granted("ROLE_ADMIN")) %}
+              {% endif %}
+              {% if(is_granted("ROLE_BOEK") or is_granted("ROLE_ADMIN")) %}
               <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{{ path("raporteren") }}">Reporteren</a>
               </li>
@@ -40,6 +43,15 @@
                   <li class="nav-item">
                       <a class="nav-link active" aria-current="page" href="{{ path("product_index") }}">Admin</a>
                   </li>
+              {% endif %}
+              {% if(app.user) %}
+                  <li class="nav-item">
+                      <a class="btn btn-danger" aria-current="page" href="{{ path("app_logout") }}">Logout</a>
+                  </li>
+              {% else %}
+              <li class="nav-item">
+                  <a class="btn btn-success" aria-current="page" href="{{ path("app_login") }}">login</a>
+              </li>
               {% endif %}
           </ul>
         </div>

@@ -11,7 +11,7 @@ class RaporterenController extends AbstractController
 {
     /**
      * @Route("/raporteren", name="raporteren")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_RAPORT')")
+     * @Security("is_granted('ROLE_ADMIN')  or is_granted('ROLE_BOEK')")
      * 
      */
     public function index(): Response

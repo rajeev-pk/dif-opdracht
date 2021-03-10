@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,16 @@ class ProductController extends AbstractController
 {
     /**
      * @Route("/", name="product_index", methods={"GET"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BALIE') or is_granted('ROLE_USER')")
      */
     public function index(ProductRepository $productRepository): Response
     {
+        $roles = $this->getUser()->getRoles();
+        foreach ($roles as $role) {
+            if($role === "ROLE_BOEK") {
+                return $this->redirect("/");
+            }
+        }
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
@@ -55,6 +63,12 @@ class ProductController extends AbstractController
      */
     public function show(Product $product): Response
     {
+        $roles = $this->getUser()->getRoles();
+        foreach ($roles as $role) {
+            if($role === "ROLE_BOEK") {
+                return $this->redirect("/");
+            }
+        }
         return $this->render('product/show.html.twig', [
             'product' => $product,
         ]);
@@ -66,6 +80,12 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product): Response
     {
+        $roles = $this->getUser()->getRoles();
+        foreach ($roles as $role) {
+            if($role === "ROLE_BOEK") {
+                return $this->redirect("/");
+            }
+        }
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -87,6 +107,12 @@ class ProductController extends AbstractController
      */
     public function delete(Request $request, Product $product): Response
     {
+        $roles = $this->getUser()->getRoles();
+        foreach ($roles as $role) {
+            if($role === "ROLE_BOEK") {
+                return $this->redirect("/");
+            }
+        }
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($product);
@@ -94,5 +120,15 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('product_index');
+    }
+
+    public function redirectBoek()
+    {
+        $roles = $this->getUser()->getRoles();
+        foreach ($roles as $role) {
+            if($role === "ROLE_BOEK") {
+                return $this->redirect("/");
+            }
+        }
     }
 }

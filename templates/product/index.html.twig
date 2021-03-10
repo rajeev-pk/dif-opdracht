@@ -3,15 +3,16 @@
 {% block title %}Product index{% endblock %}
 
 {% block body %}
+    {% if(is_granted("ROLE_ADMIN")) %}
     <h1>Product index</h1>
-
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Price</th>
+
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,13 +22,11 @@
                 <td>{{ product.id }}</td>
                 <td>{{ product.title }}</td>
                 <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
-                <td>
-                    {% if(is_granted("ROLE_ADMIN")) %}
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-                    {% endif %}
-                </td>
+                <td>€{{ product.price }}</td>
+                    <td>
+                        <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
+                        <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                    </td>
             </tr>
         {% else %}
             <tr>
@@ -36,7 +35,14 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if(is_granted("ROLE_ADMIN")) %}
+
     <a href="{{ path('product_new') }}">Create new</a>
+    {% else %}
+    <button class="btn btn-secondary d-inline-flex align-items-center" data-bs-toggle="collapse" aria-expanded="true" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Products</button>
+    <ul class="list-unstyled ps-3 collapse" id="contents-collapse" style="">
+        {% for product in products %}
+            <li><a class="d-inline-flex align-items-center rounded" href="{{ path('product_show', {'id': product.id}) }}">{{ product.title }}</a></li>
+        {% endfor %}
+    </ul>
     {% endif %}
 {% endblock %}

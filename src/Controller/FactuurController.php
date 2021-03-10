@@ -11,7 +11,7 @@ class FactuurController extends AbstractController
 {
     /**
      * @Route("/factuur", name="factuur")
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BOEK')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BOEK') or is_granted('ROLE_BALIE')")
      */
     public function index(): Response
     {
