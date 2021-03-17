@@ -3,5 +3,25 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-	<h1>{{ controller_name }}✅</h1>
+	<section class="py-5 text-center container">
+		<div class="row py-lg-5">
+			<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 class="fw-light">Opdracht vich uploader</h1 class="fw-light">
+				<p class="lead text-muted">Ik weet niet wat ik hier moet neer zetten maar dit is mijn opdracht.</p>
+				<p>
+					{% if(is_granted("ROLE_ADMIN")) %}
+						<a href="{{ path('view_products_index') }}" class="btn btn-primary my-2">View products <i class="bi bi-cart"></i></a>
+					{% else %}
+						<a href="{{ path('product_index') }}" class="btn btn-primary my-2">View products <i class="bi bi-cart"></i></a>
+					{% endif %}
+					{% if(app.user) %}
+						<a href="{{ path("app_logout") }}" class="btn btn-secondary my-2">Logout <i class="bi bi-person-fill"></i></a>
+					{% else %}
+						<a href="{{ path("app_register") }}" class="btn btn-secondary my-2">Create a account <i class="bi bi-person-fill"></i></a>
+					{% endif %}
+
+				</p>
+			</div>
+		</div>
+	</section>
 {% endblock %}

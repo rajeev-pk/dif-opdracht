@@ -1,0 +1,39 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Image</th>
+        {% if(is_granted("ROLE_ADMIN")) %}
+            <th>actions</th>
+        {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.title }}</td>
+            <td>{{  product.description|length > 50 ? product.description|slice(0, 50) ~ '...' : product.description }}</td>
+            <td>€{{ product.price }}</td>
+            <td><img src="{{ vich_uploader_asset(product, 'imageFile') }}" width="100px"></td>
+            <td>
+                <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
+                {% if(is_granted("ROLE_ADMIN")) %}
+                <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if(is_granted("ROLE_ADMIN")) %}
+    <a href="{{ path('product_new') }}">Create new</a>
+{% endif %}

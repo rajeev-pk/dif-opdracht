@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Form\ProductType;
+use App\Form\Product1Type;
 use App\Repository\ProductRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -29,6 +29,7 @@ class ProductController extends AbstractController
                 return $this->redirect("/");
             }
         }
+
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
@@ -41,7 +42,7 @@ class ProductController extends AbstractController
     public function new(Request $request): Response
     {
         $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
+        $form = $this->createForm(Product1Type::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,6 +70,7 @@ class ProductController extends AbstractController
                 return $this->redirect("/");
             }
         }
+
         return $this->render('product/show.html.twig', [
             'product' => $product,
         ]);
@@ -86,7 +88,8 @@ class ProductController extends AbstractController
                 return $this->redirect("/");
             }
         }
-        $form = $this->createForm(ProductType::class, $product);
+
+        $form = $this->createForm(Product1Type::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -120,15 +123,5 @@ class ProductController extends AbstractController
         }
 
         return $this->redirectToRoute('product_index');
-    }
-
-    public function redirectBoek()
-    {
-        $roles = $this->getUser()->getRoles();
-        foreach ($roles as $role) {
-            if($role === "ROLE_BOEK") {
-                return $this->redirect("/");
-            }
-        }
     }
 }

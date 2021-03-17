@@ -4,33 +4,9 @@
 
 {% block body %}
     <h1>Product</h1>
-
-    <table class="table table-striped table-hover">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ product.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>€{{ product.price }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <a href="{{ path('product_index') }}">back to list</a>
-    {% if(is_granted("ROLE_ADMIN")) %}
-
-        <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
-        {{ include('product/_delete_form.html.twig') }}
-
+    {% if(is_granted('ROLE_ADMIN') or is_granted('ROLE_BALIE')) %}
+        {{ include('product/adminPages/_showAdmin.html.twig') }}
+    {% else %}
+        {{ include('product/userPages/_showUser.html.twig') }}
     {% endif %}
-
 {% endblock %}
