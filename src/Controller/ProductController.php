@@ -19,21 +19,25 @@ class ProductController extends AbstractController
 {
     /**
      * @Route("/", name="product_index", methods={"GET"})
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_BALIE') or is_granted('ROLE_USER')")
      */
     public function index(ProductRepository $productRepository): Response
     {
-        $roles = $this->getUser()->getRoles();
-        foreach ($roles as $role) {
-            if($role === "ROLE_BOEK") {
-                return $this->redirect("/");
-            }
-        }
+	
+	if($this->getUser() != null) {
+			
+        	$roles = $this->getUser()->getRoles();
+        	foreach ($roles as $role) {
+            		if($role === "ROLE_BOEK") {
+                		return $this->redirect("/");
+            		}
+		}
+	}
 
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
         ]);
     }
+	
 
     /**
      * @Route("/new", name="product_new", methods={"GET","POST"})
@@ -64,12 +68,16 @@ class ProductController extends AbstractController
      */
     public function show(Product $product): Response
     {
-        $roles = $this->getUser()->getRoles();
-        foreach ($roles as $role) {
-            if($role === "ROLE_BOEK") {
-                return $this->redirect("/");
-            }
-        }
+
+	if($this->getUser() != null) {
+		
+           $roles = $this->getUser()->getRoles();
+           foreach ($roles as $role) {
+               if($role === "ROLE_BOEK") {
+                   return $this->redirect("/");
+               }
+           }
+	}
 
         return $this->render('product/show.html.twig', [
             'product' => $product,
