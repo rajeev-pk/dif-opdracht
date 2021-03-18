@@ -1,9 +1,11 @@
 <div class="row">
+    
+    {% set count = 0 %}
     {% for product in products %}
-    <div class="col-sm-12 col-md-6 col-xl-4">
-        <div class="card">
+	    <div id="product-{{ product.id }}" class="col-sm-12 col-md-6 col-xl-4 product {% if(count >= 4) %} loadmore-product {% endif %}" {% if(count >= 4) %} style="display: none" {% endif %}>
+        <div class="card mb-3">
             <img src="{{  vich_uploader_asset(product, 'imageFile') }}" class="card-img-top" height="180px" alt="">
-            <div class="card-body">
+            <div class="card-body m-3">
                 <h5 class="card-title">
                     {{ product.title }}
                 </h5>
@@ -24,5 +26,16 @@
             </div>
         </div>
     </div>
+    {% set count = count + 1 %}
     {% endfor %}
+
+    {% if(count >= 4) %}
+	    <div class="col d-flex align-items-center justify-content-center">
+        	<a id="load-btn" class="btn btn-primary w-100`">Load more</a>
+	    </div>
+    {% endif %}
 </div>
+
+{% block javascript %}
+    <script src="{{ asset('js/load.js') }}"></script>
+{% endblock %}
